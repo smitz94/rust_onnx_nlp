@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "rust-onnx-nlp"
+version = "0.1.0"
+description = ""
+authors = ["smit zaveri <smitzaveri12@gmail.com>"]
+readme = "README.md"
+packages = [{include = "rust_onnx_nlp"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+torch = "^2.0.1"
+transformers = "^4.29.0"
+onnx = "^1.14.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
