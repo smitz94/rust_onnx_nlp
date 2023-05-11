@@ -23,4 +23,7 @@
 4. Ran poetry run python export.py and exported the onnx version of model.
 
 ### TODO
-1. Change the text dependency in 
+1. Change the text dependency in main.rs and convert it to user input.
+2. Create an actix based APIs and address this user input.
+3. Bind these 2 into a docker container and deploy as a service
+4. Document Performance of the inference.
