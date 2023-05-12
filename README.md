@@ -41,7 +41,8 @@
 
 **Date:** 12-05-2023
 1. Updated text input through CLI args. Worked fine but the predictions of the model were not good and wrong sometime.
-2. Ran cargo run --release -- "Obama is the [MASK] of USA".
+2. CLI args reference: [https://doc.rust-lang.org/book/ch12-01-accepting-command-line-arguments.html]
+3. Ran cargo run --release -- "Obama is the [MASK] of USA".
 
 **Date**: 13-05-2023
 1. Create a src/bin folder to store other binary files that can be compiled.
