@@ -6,9 +6,13 @@
 3. Given a user input it gives the output
 
 ### Process
+**Date:** 11-05-2023
 1. Got to know about sonos/tract.
 2. It has a git repo and some example.
 3. tract-onnx crate is there to support its implementation in rust.
+
+**Date:** 12-05-2023
+1. Converting the hardcoded text input in the main.rs to read from cli arguments.
 
 ### Issues
 1. while looking at the example in the sonos/tract I found that there is a text feild which is coupled with the model while exporting as onnx in export.py file.
@@ -19,13 +23,17 @@
 4. edition="2021" in Cargo.toml is required but dont know why?
 
 ### Completed
-Date - 12-05-2023
+**Date:** 11-05-2023
 1. Created rust project and set up Cargo.toml and set all the dependencies for rust 
 2. Installed poetry and added all the relevant dependencies for python
 3. Ran poetry add torch transformers onnx
 4. Ran poetry run python export.py and exported the onnx version of model.
 5. Ran cargo clippy.
-6. Rand cargo run --release.
+6. Ran cargo run --release.
+
+**Date:** 12-05-2023
+1. Updated text input through CLI args. Worked fine but the predictions of the model were not good and wrong sometime.
+2. Ran cargo run --release -- "Obama is the [MASK] of USA".
 
 ### TODO
 1. Change the text dependency in main.rs and convert it to user input.

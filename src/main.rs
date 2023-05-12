@@ -2,6 +2,7 @@ use ndarray::s;
 use std::{
     path::{Path, PathBuf},
     str::FromStr,
+    env,
 };
 use tokenizers::tokenizer::{Result, Tokenizer};
 use tract_onnx::prelude::*;
@@ -9,8 +10,9 @@ use tract_onnx::prelude::*;
 fn main() -> Result<()> {
     let model_dir = PathBuf::from_str("./albert")?;
     let tokenizer = Tokenizer::from_file(Path::join(&model_dir, "tokenizer.json"))?;
+    let args: Vec<String> = env::args().collect();
 
-    let text = "Paris is the [MASK] of France.";
+    let text: &str = &args[1];
 
     let tokenizer_output = tokenizer.encode(text, true)?;
     let input_ids = tokenizer_output.get_ids();
