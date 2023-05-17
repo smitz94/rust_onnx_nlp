@@ -1,26 +1,39 @@
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{get, web, App, HttpServer, Result, Responder};
+use serde::{Deserialize, Serialize};
+use std::process::Command;
 
-#[get("/")]
-async fn hello() -> impl Responder {
-    HttpResponse::Ok().body("Hello world!")
+#[derive(Deserialize)]
+struct RequestBody {
+    text: String,
 }
 
-#[post("/echo")]
-async fn echo(req_body: String) -> impl Responder {
-    HttpResponse::Ok().body(req_body)
+#[derive(Serialize)]
+struct ResponseBody {
+    text: String,
 }
 
-async fn manual_hello() -> impl Responder {
-    HttpResponse::Ok().body("Hey there!")
+#[get("/infer")]
+async fn inference(req_body: web::Json<RequestBody>) -> Result<impl Responder> {
+    let text: &str = &req_body.text;
+    let output = Command::new("C:/Users/szaveri/git/rust_onnx_nlp/target/release/rust_onnx_nlp")
+                         .arg(text.to_string()).output().expect("failed to execute process.");
+
+    let prediction = String::from_utf8(output.stdout).unwrap();
+    println!("{}",std::env::current_dir().unwrap().display());
+
+    println!("prediction is {}",prediction);
+
+    let res_body = ResponseBody{
+        text: prediction,
+    };
+     Ok(web::Json(res_body))
 }
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
-            .service(hello)
-            .service(echo)
-            .route("/hey", web::get().to(manual_hello))
+            .service(inference)
     })
     .bind(("127.0.0.1", 8080))?
     .run()
