@@ -22,12 +22,18 @@
 3. While running cargo clippy faced some error with Cargo.toml- ndarray.workspace = true was mentioned in tutorial but thatt will throw error so removed and then added reference from the crate.io
 4. edition="2021" in Cargo.toml is required but dont know why?
 
-**Date**: 13-05-2023
+**Date:** 13-05-2023
 1. I wanted to create multiple binaries in single project but was unable to get it. The idea was to create a actix api in same project and then whenever that api is hit with some text call the model binary and then return the output to the user.
    1. while going through this I found these:
       1. Youtube video : [https://www.youtube.com/watch?v=F23vC3IQZJA&ab_channel=RustIng] talking about bin folder.
       2. Then I found the cargo book and a desired project structure in case of a bigger and organized project : [https://doc.rust-lang.org/cargo/guide/project-layout.html]
       3. Then I found the changes in toml file related to bin : [https://doc.rust-lang.org/cargo/reference/cargo-targets.html#binaries]
+
+**Date:**
+1. Tried running the same command but I was running it from different directories , so when I tried to run the command again from the root directory it worked fine.
+2. Same I tried running inference api from the root directory and it worked fine.
+
+command: cargo build  --bin rust_onnx_nlp --release , cargo run --bin inference_api
 
 
 ### Completed
@@ -44,10 +50,16 @@
 2. CLI args reference: [https://doc.rust-lang.org/book/ch12-01-accepting-command-line-arguments.html]
 3. Ran cargo run --release -- "Obama is the [MASK] of USA".
 
-**Date**: 13-05-2023
+**Date:** 13-05-2023
 1. Create a src/bin folder to store other binary files that can be compiled.
 2. Added inference_api.rs file that consists of actix web api for sample hello world.
 3. Successfully created 2 binaries in single project using actix dependency in dependencies and also adding bin in toml file.
+
+**Date:** 17-05-2023
+1. From the root of the project directory ran: .\target\release\rust_onnx_nlp "Paris is the [MASK] of France."
+**root dir is the dir where Cargo.toml is located**
+2. Ran from root of the project directory : cargo build --bin rust_onnx_nlp --release
+3. Ran : cargo run --bin inference_api 
 
 ### TODO
 1. Change the text dependency in main.rs and convert it to user input.

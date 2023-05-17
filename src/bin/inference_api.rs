@@ -15,10 +15,13 @@ struct ResponseBody {
 #[get("/infer")]
 async fn inference(req_body: web::Json<RequestBody>) -> Result<impl Responder> {
     let text: &str = &req_body.text;
-    let output = Command::new(".../target/release/rust_onnx_nlp")
-                         .arg(text).output().expect("failed to execute process.");
-    
+    let output = Command::new("C:/Users/szaveri/git/rust_onnx_nlp/target/release/rust_onnx_nlp")
+                         .arg(text.to_string()).output().expect("failed to execute process.");
+
     let prediction = String::from_utf8(output.stdout).unwrap();
+    println!("{}",std::env::current_dir().unwrap().display());
+
+    println!("prediction is {}",prediction);
 
     let res_body = ResponseBody{
         text: prediction,
