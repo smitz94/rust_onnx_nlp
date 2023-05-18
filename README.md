@@ -29,13 +29,16 @@
       2. Then I found the cargo book and a desired project structure in case of a bigger and organized project : [https://doc.rust-lang.org/cargo/guide/project-layout.html]
       3. Then I found the changes in toml file related to bin : [https://doc.rust-lang.org/cargo/reference/cargo-targets.html#binaries]
 
-**Date:**
+**Date:** 17-05-2023
 1. Tried running the same command but I was running it from different directories , so when I tried to run the command again from the root directory it worked fine.
 2. Same I tried running inference api from the root directory and it worked fine.
 
 command: cargo build  --bin rust_onnx_nlp --release , cargo run --bin inference_api
 
-
+**Date:** 18-05-2023
+1. Using debian buster slim was throwing error for glibc as inference api required 2.29 version. Therefore changed the version from buster slim to latest debian.
+2. Explicitely bin path not mentioned in cargo.toml file causing issue to build docker image.
+3. Binding port of the rust application needs to be changed else it was unable to communicated via postman.
 ### Completed
 **Date:** 11-05-2023
 1. Created rust project and set up Cargo.toml and set all the dependencies for rust 

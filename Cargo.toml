@@ -12,3 +12,8 @@ serde = "1.0.163"
 
 [[bin]]
 name = "inference_api"
+path = "src/bin/inference_api.rs"
+
+[[bin]]
+name = "rust_onnx_nlp"
+path = "src/main.rs"
