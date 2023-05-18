@@ -15,7 +15,7 @@ struct ResponseBody {
 #[get("/infer")]
 async fn inference(req_body: web::Json<RequestBody>) -> Result<impl Responder> {
     let text: &str = &req_body.text;
-    let output = Command::new("C:/Users/szaveri/git/rust_onnx_nlp/target/release/rust_onnx_nlp")
+    let output = Command::new("./rust_onnx_nlp")
                          .arg(text.to_string()).output().expect("failed to execute process.");
 
     let prediction = String::from_utf8(output.stdout).unwrap();
@@ -31,11 +31,12 @@ async fn inference(req_body: web::Json<RequestBody>) -> Result<impl Responder> {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    println!("Starting Inference");
     HttpServer::new(|| {
         App::new()
             .service(inference)
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind("0.0.0.0:8080")?
     .run()
     .await
 }
