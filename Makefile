@@ -1,4 +1,9 @@
-.PHONY: run_main build_main run_inference build_inference build_project build_image run_container
+.PHONY: run_main build_main run_inference build_inference build_project build_image run_container export_model clean
+
+export_model:
+	@echo "Exporting model in ONNX format"
+	poetry install
+	poetry run python .\export.py
 
 run_main:
 	@echo "Running main"
