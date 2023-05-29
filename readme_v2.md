@@ -1,5 +1,3 @@
-![tract-logo](assets/tract-horizontal-black.png) ![rust-logo](assets/rust-logo.png) ![python-logo](assets/python-logo.png) ![onnx-logo](assets/onnx-logo.png)
-
 # Fast Inference Module/Template for MLOps with Rust utilizing ONNX
 
 ![GitHub](https://img.shields.io/github/license/smitz94/rust_onnx_nlp)
