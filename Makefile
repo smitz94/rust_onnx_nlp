@@ -3,7 +3,8 @@
 export_model:
 	@echo "Exporting model in ONNX format"
 	poetry install
-	poetry run python .\export.py
+	& ((poetry env info --path) + "\Scripts\activate.ps1")
+	python .\export.py
 
 run_main:
 	@echo "Running main"

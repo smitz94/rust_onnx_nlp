@@ -1,75 +1,125 @@
-# rust_onnx_nlp
+# Fast Inference Module/Template for MLOps with Rust utilizing ONNX
 
-### Tasks 
-1. Build a rust project for pytorch
-2. Deploy it using rust-actix
-3. Given a user input it gives the output
+![GitHub](https://img.shields.io/github/license/smitz94/rust_onnx_nlp)
+![rustc >= 1.65.0](https://img.shields.io/badge/rustc-%3E%3D1.65.0-brightgreen)
 
-### Process
-**Date:** 11-05-2023
-1. Got to know about sonos/tract.
-2. It has a git repo and some example.
-3. tract-onnx crate is there to support its implementation in rust.
+This module is a simple template for MLOps with Rust and Python. It uses python to generate _ONNX formatted model_ and then utilizes Rust to load the ONNX model and serve it as an API using _Rust-Actix_. It also includes dockerfile which can be used to containerize and deploy as an application.
 
-**Date:** 12-05-2023
-1. Converting the hardcoded text input in the main.rs to read from cli arguments.
+# Table of Contents
 
-### Issues
-1. while looking at the example in the sonos/tract I found that there is a text feild which is coupled with the model while exporting as onnx in export.py file.
-2. Looking at this example: [https://pytorch.org/tutorials/advanced/super_resolution_with_onnxruntime.html] I found that:
-   1. onnx runtime is supported from python 3.5 - 3.7.
-   2. the text input is required because to export a model, we call the torch.onnx.export() function. This will execute the model, recording a trace of what operators are used to compute the outputs. Because export runs the model, we need to provide an input tensor x.
-3. While running cargo clippy faced some error with Cargo.toml- ndarray.workspace = true was mentioned in tutorial but thatt will throw error so removed and then added reference from the crate.io
-4. edition="2021" in Cargo.toml is required but dont know why?
+- [Motivation](#motivation)
+- [Features](#features)
+- [How to Run different Features with Examples](#how-to-run-different-features-with-examples)
+- [Pre-requisites](#Prerequisites)
+- [What did I Learn](#what-did-i-learn)
+- [Credits](#credits)
+    
 
-**Date:** 13-05-2023
-1. I wanted to create multiple binaries in single project but was unable to get it. The idea was to create a actix api in same project and then whenever that api is hit with some text call the model binary and then return the output to the user.
-   1. while going through this I found these:
-      1. Youtube video : [https://www.youtube.com/watch?v=F23vC3IQZJA&ab_channel=RustIng] talking about bin folder.
-      2. Then I found the cargo book and a desired project structure in case of a bigger and organized project : [https://doc.rust-lang.org/cargo/guide/project-layout.html]
-      3. Then I found the changes in toml file related to bin : [https://doc.rust-lang.org/cargo/reference/cargo-targets.html#binaries]
+# Motivation
 
-**Date:** 17-05-2023
-1. Tried running the same command but I was running it from different directories , so when I tried to run the command again from the root directory it worked fine.
-2. Same I tried running inference api from the root directory and it worked fine.
+After going through several posts on linkedin and MLOps-discussion forums regarding benifits of Rust based inference while deploying ML application, I decided to explore it further. I really liked the idea that we should not be rigid about python everywhere and use the tools which provide the best performance for the needs we have.
 
-command: cargo build  --bin rust_onnx_nlp --release , cargo run --bin inference_api
+Low docker image size and blazing fast inference is desired by every MLOps practitioner. The idea of creating binaries and utlizing them into containerized application motivated me to build this project.
 
-**Date:** 18-05-2023
-1. Using debian buster slim was throwing error for glibc as inference api required 2.29 version. Therefore changed the version from buster slim to latest debian.
-2. Explicitely bin path not mentioned in cargo.toml file causing issue to build docker image.
-3. Binding port of the rust application needs to be changed else it was unable to communicated via postman.
-### Completed
-**Date:** 11-05-2023
-1. Created rust project and set up Cargo.toml and set all the dependencies for rust 
-2. Installed poetry and added all the relevant dependencies for python
-3. Ran poetry add torch transformers onnx
-4. Ran poetry run python export.py and exported the onnx version of model.
-5. Ran cargo clippy.
-6. Ran cargo run --release.
+The idea that under deployment the container will only have binaries running and it will be really light weight and fast attracted me to build this project. 
 
-**Date:** 12-05-2023
-1. Updated text input through CLI args. Worked fine but the predictions of the model were not good and wrong sometime.
-2. CLI args reference: [https://doc.rust-lang.org/book/ch12-01-accepting-command-line-arguments.html]
-3. Ran cargo run --release -- "Obama is the [MASK] of USA".
+We can use this same template in most of the Applications.
 
-**Date:** 13-05-2023
-1. Create a src/bin folder to store other binary files that can be compiled.
-2. Added inference_api.rs file that consists of actix web api for sample hello world.
-3. Successfully created 2 binaries in single project using actix dependency in dependencies and also adding bin in toml file.
+# Features
 
-**Date:** 17-05-2023
-1. From the root of the project directory ran: .\target\release\rust_onnx_nlp "Paris is the [MASK] of France."
-**root dir is the dir where Cargo.toml is located**
-2. Ran from root of the project directory : cargo build --bin rust_onnx_nlp --release
-3. Ran : cargo run --bin inference_api 
+### CLI
 
-### TODO
-1. Change the text dependency in main.rs and convert it to user input.
-2. Create an actix based APIs and address this user input.
-3. Bind these 2 into a docker container and deploy as a service
-4. Document Performance of the inference.
+CLI support with Makefile to 
+1. Export model
+2. Build binaries
+3. Build whole project
+4. Create docker image
+5. Run model locally
+6. Deploy as docker container
+   
+### API
 
+Utilizing Actix it has CLI as well as docker support to expose api that can take user input and return model predicted output.
 
-### References
-[https://www.youtube.com/watch?v=GEd5PY3BeNo&ab_channel=PragmaticAILabs]
+### Containerized Application
+
+It has dockerfile that can be utilized to deploy as docker container or any cloud platform.
+
+# Pre-requisites
+
+I like Poetry to work with dependency management and configurations. But when you first build your project Poetry takes the python version from your local as reference and start adding other libraries resolving dependencies.
+
+There are 2 ways you can control the python version you want to work with for your project. 
+1. Install the python version to your local system.
+2. Install mamba a lightweight conda to manage base python version of your project while you build it.
+
+I like to use 2nd option as it stops the interference of different python versions in your local system. So I find the 2nd option very convenient.
+
+Make sure while building this project for the first time install python dependencies, setup rust.
+
+Refer: 
+1. https://www.rust-lang.org/tools/install
+2. https://mamba.readthedocs.io/en/latest/installation.html
+3. https://python-poetry.org/docs/basic-usage/
+
+# How to Run different Features with Examples
+
+Please go through [pre-requisites](#pre-requisites).
+
+To enable easy experience running this project again and to no memorize the commands I have added makefile to it.
+
+### Exporting the model with python env enabled
+
+```sh
+make export_model
+```
+underlying this command will run these commands:
+```sh
+poetry install
+```
+which will install all the python dependencies in virtualenv using poetry.lock file as reference.
+
+```sh
+& ((poetry env info --path) + "\Scripts\activate.ps1")
+```
+which will activate the virtualenv in the current shell without changing shell settings.
+```sh
+python .\export.py
+```
+which will export the ONNX fomat model in to the directory specified.
+
+### Building Local Project
+
+```sh
+make build_project
+```
+this will build the complete project, underlying commands like above are explained in [makefile](/Makefile).
+
+### Building Docker Image
+
+```sh
+make build_image
+```
+
+### Running Docker Container
+
+```sh
+make run_container
+```
+
+> You can customize commands in [makefile](/Makefile).
+# What did I Learn
+
+# Credits
+
+### Pragmatic AI  
+
+This channel helped me to understand the capabilities of the project and introduced to some good crates and libraries.
+
+### Sonos-tract https://github.com/sonos/tract
+
+Bridge between ONNX and rust.
+
+### ChatGPT  
+
+Helped me with mundane tasks, dockerfile creation and debugging. Really useful to fast track your project and debuggings.
